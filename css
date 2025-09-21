@@ -1,0 +1,125 @@
+/***** ASIA LINK AI — Motion UI Base (ryz-) ***********************************
+ * 使い方：
+ *  1) 外観 → カスタマイズ → 追加CSS にこのファイルを丸ごと貼る
+ *  2) ブロックの「追加CSSクラス」に下記クラスを付与して使う
+ *     - セクション：ryz-sec
+ *     - 内側コンテナ：ryz-wrap
+ *     - ガラスパネル：ryz-glass
+ *     - 見出し（大）：ryz-h1（3D化の土台。JSなしでも美しく表示）
+ *     - リード文：ryz-lead
+ *     - 金色ボタン：ryz-btn ryz-btn--gold
+ *     - ガラスボタン：ryz-btn ryz-btn--ghost
+ *     - カード：ryz-card
+ *     - 画像フレーム：ryz-img
+ *     - 表（比較表など）：ryz-table
+ *     - スクロールでふわっと：reveal（→ .reveal はCSSだけでも軽く効かせる）
+ *****************************************************************************/
+
+/* ========= Tokens / Theme ========= */
+:root{
+  --ryz-bg1:#0b0f18;      /* 背景グラデの上部 */
+  --ryz-bg2:#0e1626;      /* 背景グラデの下部 */
+  --ryz-text:#eef5ff;     /* 文字 */
+  --ryz-muted:#bcd0ff;    /* 補助文字 */
+  --ryz-glass:rgba(255,255,255,.06); /* ガラスの塗り */
+  --ryz-bd:rgba(255,255,255,.22);    /* ガラスの枠線 */
+  --ryz-gold:#ffd54d;     /* 金色（ボタン/発光） */
+  --ryz-c1:#68b5ff;       /* ネオン系（青） */
+  --ryz-c2:#8b5cf6;       /* ネオン系（紫） */
+  --ryz-c3:#00ffd0;       /* ネオン系（シアン） */
+}
+
+/* ========= Base / Container ========= */
+html,body{margin:0}
+body{background:linear-gradient(180deg,var(--ryz-bg1),var(--ryz-bg2));color:var(--ryz-text);
+  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans JP",sans-serif; line-height:1.7}
+.ryz-wrap{max-width:1200px;margin:0 auto;padding-inline:clamp(16px,4vw,24px)}
+.ryz-sec{position:relative;padding-block:clamp(48px,8vw,96px); isolation:isolate}
+
+/* ========= Headings / Text ========= */
+.ryz-h1{
+  margin:.35rem 0 .6rem; line-height:1.06; font-weight:900;
+  font-size:clamp(32px,6vw,64px); letter-spacing:.02em;
+  background:linear-gradient(90deg,#fff7e6,var(--ryz-gold));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  text-shadow:0 0 20px rgba(255,213,77,.22); /* JSなしでも立体感 */
+}
+.ryz-lead{font-size:clamp(15px,1.9vw,18px); opacity:.96}
+.ryz-eyebrow{display:inline-flex;gap:8px;align-items:center;margin-bottom:.6rem;color:#94c9ff;
+  font-weight:800;letter-spacing:.12em}
+.ryz-dot{width:8px;height:8px;border-radius:999px;
+  background:radial-gradient(circle at 30% 30%,#fff,var(--ryz-c1)60%,transparent 61%);
+  box-shadow:0 0 10px var(--ryz-c1)}
+
+/* ========= Glass Panel / Card ========= */
+.ryz-glass{
+  position:relative; border-radius:22px; overflow:hidden;
+  background:linear-gradient(180deg,var(--ryz-glass),rgba(255,255,255,.03));
+  border:1px solid var(--ryz-bd);
+  box-shadow:0 28px 56px rgba(0,0,0,.52), inset 0 0 32px rgba(255,255,255,.08);
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+  padding:clamp(22px,4vw,36px);
+}
+/* ガラス外周の薄い発光（上品） */
+.ryz-glass::before{
+  content:""; position:absolute; inset:-1px; border-radius:inherit; padding:1.2px; z-index:-1;
+  background:conic-gradient(from .08turn,#ffd700,#ffae00,#fff5c3,#ffd700);
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude; filter:blur(10px); opacity:.62;
+  animation:ryz-spin 16s linear infinite;
+}
+.ryz-card{
+  position:relative; border-radius:18px; overflow:hidden;
+  background:linear-gradient(180deg,var(--ryz-glass),rgba(255,255,255,.03));
+  border:1px solid var(--ryz-bd); box-shadow:0 20px 44px rgba(0,0,0,.45), inset 0 0 24px rgba(255,255,255,.08);
+  -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+  padding:clamp(16px,3vw,24px);
+}
+/* 内側を横切る淡いハイライト */
+.ryz-card::after, .ryz-glass::after{
+  content:""; position:absolute; inset:-12%; border-radius:inherit; pointer-events:none;
+  background:linear-gradient(120deg,transparent 0 46%, rgba(255,255,255,.10) 50%, transparent 54% 100%);
+  background-size:220% 220%; filter:blur(.35px); opacity:.24; animation:ryz-sweep 7.2s linear infinite;
+}
+
+/* ========= Buttons ========= */
+.ryz-cta{display:flex;gap:12px;flex-wrap:wrap}
+.ryz-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:.6em;
+  padding:12px 18px;border-radius:12px;text-decoration:none;cursor:pointer;transition:transform .2s, filter .25s, box-shadow .25s}
+.ryz-btn--gold{color:#091219;background:linear-gradient(180deg,var(--ryz-gold),#ffb300);
+  border:1px solid rgba(255,255,255,.28); box-shadow:0 12px 28px rgba(0,0,0,.45), inset 0 0 22px rgba(255,255,255,.18)}
+.ryz-btn--ghost{color:var(--ryz-text);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.03));
+  border:1px solid var(--ryz-bd)}
+.ryz-btn:hover{transform:translateY(-3px);filter:saturate(1.06);box-shadow:0 0 34px rgba(255,213,77,.4), inset 0 0 26px rgba(255,255,255,.22)}
+
+/* ========= Images / Tables ========= */
+.ryz-img{position:relative;display:block;width:100%;border-radius:16px;overflow:hidden;
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+  border:1px solid rgba(255,255,255,.45); box-shadow:0 12px 28px rgba(0,0,0,.45), inset 0 0 22px rgba(255,255,255,.12)}
+.ryz-img img{display:block;width:100%;height:auto;object-fit:cover;aspect-ratio:16/9}
+
+.ryz-table{width:100%;border-collapse:separate;border-spacing:0 10px}
+.ryz-table th,.ryz-table td{padding:10px 12px;border:1px solid var(--ryz-bd);
+  background:linear-gradient(180deg,var(--ryz-glass),rgba(255,255,255,.03));color:var(--ryz-text)}
+.ryz-table th{font-weight:700}
+
+/* ========= Reveal（スクロールでふわっと） ========= */
+.reveal{opacity:0;transform:translateY(16px) scale(.98);filter:blur(8px);
+  transition:opacity .8s cubic-bezier(.2,.7,0,1), transform .8s cubic-bezier(.2,.7,0,1), filter .8s}
+.reveal.in{opacity:1;transform:none;filter:none}
+
+/* ========= Utilities ========= */
+.ryz-grid{display:grid;gap:16px}
+@media(min-width:980px){
+  .ryz-cols-2{grid-template-columns:repeat(2,1fr)}
+  .ryz-cols-3{grid-template-columns:repeat(3,1fr)}
+  .ryz-cols-4{grid-template-columns:repeat(4,1fr)}
+}
+
+/* ========= Animations ========= */
+@keyframes ryz-spin{to{transform:rotate(1turn)}}
+@keyframes ryz-sweep{to{background-position:200% 200%}}
+@media(prefers-reduced-motion:reduce){
+  .ryz-glass::before,.ryz-glass::after,.ryz-card::after{animation:none!important}
+  .reveal{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+}
